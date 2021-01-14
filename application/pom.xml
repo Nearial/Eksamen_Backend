@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dk.newbiz</groupId>
-    <artifactId>CA3Backend</artifactId>
+    <artifactId>ExamBackend</artifactId>
     <version>1.0.0</version>
     <packaging>war</packaging>
 
-    <name>CourseAssignment3</name>
+    <name>Eksamen Backend</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>

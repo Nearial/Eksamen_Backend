@@ -16,14 +16,16 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Sport.getAll", query = "SELECT u FROM Sport u"),
+    @NamedQuery(name = "Sport.findSport", query = "SELECT u FROM Sport u WHERE u.name = :name"),
     @NamedQuery(name = "Sport.deleteAllRows", query = "DELETE FROM Sport")})
 public class Sport implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
     private String name;
-
     private String description;
 
     public Sport(String name, String description) {
@@ -48,6 +50,14 @@ public class Sport implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

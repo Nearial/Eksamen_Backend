@@ -10,7 +10,6 @@ import errorhandling.exceptions.DatabaseException;
 import errorhandling.exceptions.SportCreationException;
 import facades.SportFacade;
 import java.util.List;
-import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -44,7 +43,6 @@ public class SportResource {
     
     @POST
     @Path("create")
-    @RolesAllowed("Admin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create (String jsonString) throws API_Exception, DatabaseException, SportCreationException {
@@ -58,8 +56,7 @@ public class SportResource {
     }
     
     @GET
-    @Path ("Sports")
-    @RolesAllowed("User")
+    @Path ("getSports")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSports() {
         List<SportDTO> sports = FACADE.getAllSports();

@@ -4,10 +4,12 @@ import DTOs.SportDTO;
 import entities.Sport;
 import errorhandling.exceptions.DatabaseException;
 import errorhandling.exceptions.SportCreationException;
+import errorhandling.exceptions.SportNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 /**
@@ -46,10 +48,10 @@ public class SportFacade {
         Sport sport = new Sport (name, description);
         
         try{
-            if (em.find(Sport.class, name) != null) {
-                throw new SportCreationException("Sport already in Database.");
+         if (userNameIsUsed(name)) {
+                System.out.println("SPORT USED!");
+                throw new SportCreationException("Sport already on list.");
             }
-            
             em.getTransaction().begin();
             em.persist(sport);
             em.getTransaction().commit();
@@ -63,7 +65,7 @@ public class SportFacade {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            
+            System.out.println(e);
             throw new DatabaseException("Something went wrong! Failed to create user, please try again later.");
         } finally {
             em.close();
@@ -87,6 +89,26 @@ public class SportFacade {
             return sportDTOs;
         } finally {
             em.close();
+        }
+    }
+    
+    public boolean userNameIsUsed(String name) {
+        Sport sport = getSportByName(name);
+        return sport != null;
+    }
+    
+    public Sport getSportByName(String name) {
+        EntityManager em = getEntityManager();
+
+        try {
+            Query query = em.createNamedQuery("Sport.findSport");
+            query.setParameter("name", name);
+
+            Sport sport = (Sport) query.getSingleResult();
+
+            return sport;
+        } catch (NoResultException e) {
+            return null;
         }
     }
 }
